@@ -1,0 +1,32 @@
+{
+  "name": "simple-blog-api",
+  "version": "1.0.0",
+  "description": "simple blog api",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/richigro/Simple-Blog-Api.git"
+  },
+  "keywords": [
+    "Blog",
+    "Api"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/richigro/Simple-Blog-Api/issues"
+  },
+  "homepage": "https://github.com/richigro/Simple-Blog-Api#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "morgan": "^1.9.1"
+  }
+}

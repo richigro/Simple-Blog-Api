@@ -26,12 +26,12 @@ describe('Simple Blog', function() {
             expect(res).to.have.status(200);
             expect(res).to.be.json;
             expect(res.body).to.be.a("array");
-            // expecting 2 recipes 
+            // expecting 3 blog posts on GET
             expect(res.body.length).to.be.at.least(3);
             res.body.forEach(function(item) {
                 expect(item).to.be.a("object");
                 expect(item).to.have.all.keys(
-                    'id', 'title', 'content', 'author');
+                    'id', 'title', 'content', 'author', 'publishDate');
             });
         });
     });
@@ -39,7 +39,7 @@ describe('Simple Blog', function() {
 
     // testing POST request to enpoint and respose data
     it("Should add a blog on POST", function() {
-        const newBlog = {title: 'Proof that the earth is flat', content: 'The earth is flat beacuse it the horizon looks flat', author: 'Tila Tequila'};
+        const newBlog = { title: 'Proof that the earth is flat', content: 'The earth is flat beacuse it the horizon looks flat', author: 'Tila Tequila', publishDate: '2018'};
         return chai.request(app)
             .post("/blogs")
             .send(newBlog)
@@ -47,28 +47,28 @@ describe('Simple Blog', function() {
                 expect(res).to.have.status(201);
                 expect(res).to.be.json;
                 expect(res.body).to.be.a('object');
-                expect(res.body).to.include.keys('id', 'title', 'content', 'author');
+                expect(res.body).to.include.keys('id', 'title', 'content', 'author', 'publishDate');
                 expect(res.body.id).to.not.equal(null);
                 expect(res.body).to.deep.equal(Object.assign(newBlog, {id: res.body.id}));
             });
     });
 
-    // testing PUT request to recipes endpoint
-    it("Should properly update Recipe provided with appropiate fields", function() {
-        const updatedRecipe = {
-            name: 'Awesome Taco',
-            ingredients: ['Run of the mill Taco', 'Awesome Sauce']
+    // testing PUT request to blogs endpoint
+    it("Should update any blog provided the correct fields on PUT", function() {
+        const updatedBlog = {
+            title: 'How to make a delicious Chimichanga',
+            author: 'Jack Black',
+            content: 'Well you first start by...'
         };
         return chai.request(app)
             // since not using db, get an existing recipe from server
             .get('/blogs')
             .then(function(res) {
-                // get id from the first listed recipe on GET
-                // add it as property to updatedRecipe object
-                updatedRecipe.id = res.body[0].id;
+                // get id from the first listed blog on GET
+                // add it as property to updatedBlog object
                 return chai.request(app)
-                .put(`/recipes/${updatedRecipe.id}`)
-                .send(updatedRecipe)
+                .put(`/blogs/${res.body[0].id}`)
+                .send(updatedBlog)
             })
             .then(function(res) {
                 expect(res).to.have.status(204);
@@ -82,9 +82,9 @@ describe('Simple Blog', function() {
         // since not db get id from get response first 
         .get('/blogs')
         .then(function(res) {
-            const recipeID = res.body[0].id;
+            const blogId = res.body[0].id;
             return chai.request(app)
-                .delete(`/blogs/${recipeID}`);
+                .delete(`/blogs/${blogId}`);
         })
         .then(function(res) {
             expect(res).to.have.status(204);

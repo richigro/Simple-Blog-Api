@@ -27,21 +27,21 @@ router.post('/', jsonParser, (req, res) => {
         return res.status(400).send(message);
       }
     }
-    const blog = BlogPosts.create(req.body.name, req.body.content, req.body.title, req.body.date = Date.now());
+    const blog = BlogPosts.create(req.body.title, req.body.content, req.body.author);
     res.status(201).json(blog);
   });
   
   // Delete blog by id
   router.delete('/:id', (req, res) => {
     BlogPosts.delete(req.params.id);
-    console.log(`Deleted shopping list item \`${req.params.ID}\``);
+    console.log(`Deleted shopping list item \`${req.params.id}\``);
     res.status(204).end();
   });
   
  // update blog from put request when passing json object
   router.put('/:id', jsonParser, (req, res) => {
-    const requiredFields = ['name', 'content', 'author'];
-    for (let i=0; i<requiredFields.length; i++) {
+    const requiredFields = ['title', 'content', 'author'];
+    for (let i = 0; i < requiredFields.length; i++) {
       const field = requiredFields[i];
       if (!(field in req.body)) {
         const message = `Missing \`${field}\` in request body`
@@ -56,10 +56,10 @@ router.post('/', jsonParser, (req, res) => {
       console.error(message);
       return res.status(400).send(message);
     }
-    console.log(`Updating shopping list item \`${req.params.id}\``);
-    const updatedItem = Recipes.update({
+    console.log(`Updating blog \`${req.params.id}\``);
+    BlogPosts.update({
       id: req.params.id,
-      name: req.body.name,
+      title: req.body.title,
       content: req.body.content,
       author: req.body.author
     });

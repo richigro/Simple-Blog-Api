@@ -57,16 +57,7 @@ describe('Simple Blog', function() {
     });
 
     // testing PUT request to blogs endpoint
-    it("Should update any blog provided the correct fields on PUT", function() {
-<<<<<<< HEAD
-        const updatedBlog = {
-            title: 'How to make a delicious Chimichanga',
-            author: 'Jack Black',
-            content: 'Well you first start by...',
-            id: res.body[0].id
-        };
-=======
->>>>>>> 6374d1006686f38b4e2f610c7ae5bdff165b1731
+    it("Should update any blog provided the correct fields on PUT", function() 
         return chai.request(app)
             // since not using db, get an existing recipe from server
             .get('/blogs')

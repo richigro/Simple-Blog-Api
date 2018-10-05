@@ -49,31 +49,43 @@ describe('Simple Blog', function() {
                 expect(res.body).to.be.a('object');
                 expect(res.body).to.include.keys('id', 'title', 'content', 'author', 'publishDate');
                 expect(res.body.id).to.not.equal(null);
-                expect(res.body).to.deep.equal(Object.assign(newBlog, {id: res.body.id}));
+                // expect(res.body).to.deep.equal(Object.assign(newBlog, {id: res.body.id}));
+                expect(res.body.title).to.equal(newBlog.title);
+                expect(res.body.content).to.equal(newBlog.content);
+                expect(res.body.author).to.equal(newBlog.author);
             });
     });
 
     // testing PUT request to blogs endpoint
     it("Should update any blog provided the correct fields on PUT", function() {
+<<<<<<< HEAD
         const updatedBlog = {
             title: 'How to make a delicious Chimichanga',
             author: 'Jack Black',
             content: 'Well you first start by...',
             id: res.body[0].id
         };
+=======
+>>>>>>> 6374d1006686f38b4e2f610c7ae5bdff165b1731
         return chai.request(app)
             // since not using db, get an existing recipe from server
             .get('/blogs')
             .then(function(res) {
                 // get id from the first listed blog on GET
                 // add it as property to updatedBlog object
+                const updatedBlog = {
+                    title: "How to make a delicious Chimichanga",
+                    author: "Jack Black",
+                    content: "Well you first start by..."
+                };
+               const updatedPost =  Object.assign(res.body[0], updatedBlog);
                 return chai.request(app)
                 .put(`/blogs/${res.body[0].id}`)
-                .send(updatedBlog)
+                .send(updatedPost)
             })
             .then(function(res) {
                 expect(res).to.have.status(204);
-                expect(res.body).to.be.a('object');
+                // expect(res.body).to.be.a('object');
             });
     });
 

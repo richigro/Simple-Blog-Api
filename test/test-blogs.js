@@ -57,7 +57,7 @@ describe('Simple Blog', function() {
     });
 
     // testing PUT request to blogs endpoint
-    it("Should update any blog provided the correct fields on PUT", function() 
+    it("Should update any blog provided the correct fields on PUT", function() {
         return chai.request(app)
             // since not using db, get an existing recipe from server
             .get('/blogs')

@@ -39,7 +39,7 @@ describe('Simple Blog', function() {
 
     // testing POST request to enpoint and respose data
     it("Should add a blog on POST", function() {
-        const newBlog = { title: 'Proof that the earth is flat', content: 'The earth is flat beacuse it the horizon looks flat', author: 'Tila Tequila', publishDate: '2018'};
+        const newBlog = { title: 'Proof that the earth is flat', content: 'The earth is flat beacuse it the horizon looks flat', author: 'Tila Tequila'};
         return chai.request(app)
             .post("/blogs")
             .send(newBlog)
@@ -58,7 +58,8 @@ describe('Simple Blog', function() {
         const updatedBlog = {
             title: 'How to make a delicious Chimichanga',
             author: 'Jack Black',
-            content: 'Well you first start by...'
+            content: 'Well you first start by...',
+            id: res.body[0].id
         };
         return chai.request(app)
             // since not using db, get an existing recipe from server

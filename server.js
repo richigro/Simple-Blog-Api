@@ -1,6 +1,6 @@
 //import node modules from npm and node_modeules
 const express = require("express");
-// const morgan = require("morgan");
+const morgan = require("morgan");
 
 // instance of express
 const app = express();
@@ -8,7 +8,7 @@ const app = express();
 const blogsRoutes = require("./blogsRouter");
 
 // using middleware to log request to server's console, for debugging purposes
-// app.use(morgan('common'));
+app.use(morgan('common'));
 
 //serving static files on from public folder
 app.use(express.static('public'));

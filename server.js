@@ -1,7 +1,7 @@
+'use strict'
 //import node modules from npm and node_modeules
 const express = require("express");
 const morgan = require("morgan");
-
 // instance of express
 const app = express();
 
@@ -33,35 +33,40 @@ app.use("/posts", postsRoutes);
 
 let server;
 
-function runServer() {
-  const port = process.env.PORT || 8080;
+function runServer(databaseUrl, port = PORT) {
   return new Promise((resolve, reject) => {
-    server = app
-      .listen(port, () => {
+    mongoose.connect(databaseUrl, err => {
+      if (err) {
+        return reject(err);
+      }
+      server = app.listen(port, () => {
         console.log(`Your app is listening on port ${port}`);
-        resolve(server);
+        resolve();
       })
-      .on("error", err => {
-        reject(err);
-      });
+        .on('error', err => {
+          mongoose.disconnect();
+          reject(err);
+        });
+    });
   });
 }
 
 function closeServer() {
-  return new Promise((resolve, reject) => {
-    console.log("Closing server");
-    server.close(err => {
-      if (err) {
-        reject(err);
-        return;
-      }
-      resolve();
+  return mongoose.disconnect().then(() => {
+    return new Promise((resolve, reject) => {
+      console.log('Closing server');
+      server.close(err => {
+        if (err) {
+          return reject(err);
+        }
+        resolve();
+      });
     });
   });
 }
 
 if (require.main === module) {
-  runServer().catch(err => console.error(err));
+  runServer(DATABASE_URL).catch(err => console.error(err));
 }
 
  module.exports = { app, runServer, closeServer };

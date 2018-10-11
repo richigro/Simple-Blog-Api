@@ -10,7 +10,7 @@ const jsonParser = bodyParser.json();
 const {Post} = require('./models');
 
 router.get('/', (req, res) => {
-    BlogPost
+    Post
       .find()
       .then(posts => {
         res.json(posts.map(post => post.serialize()));
@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
   });
 
 router.get('/posts/:id', jsonParser,  (req, res) => {
-    BlogPost
+    Post
       .findById(req.params.id)
       .then(post => res.json(post.serialize()))
       .catch(err => {
@@ -47,13 +47,13 @@ router.get('/posts/:id', jsonParser,  (req, res) => {
       content: req.body.content,
       author: req.body.author
     })
-    .then(blogPost => res.status(201).json(blogPost.serialize()))
+    .then(Post => res.status(201).json(Post.serialize()))
     .catch(err => {
       console.error(err);
       res.status(500).json({ error: 'Something went wrong' });
     });
 
-    app.put('/posts/:id', (req, res) => {
+    router.put('/posts/:id', jsonParser,  (req, res) => {
         if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
           res.status(400).json({
             error: 'Request path id and request body id values must match'
@@ -68,15 +68,15 @@ router.get('/posts/:id', jsonParser,  (req, res) => {
           }
         });
       
-        BlogPost
+        Post
           .findByIdAndUpdate(req.params.id, { $set: updated }, { new: true })
           .then(updatedPost => res.status(204).end())
           .catch(err => res.status(500).json({ message: 'Something went wrong' }));
       });
       
       
-      app.delete('/:id', (req, res) => {
-        BlogPost
+      router.delete('/:id', jsonParser, (req, res) => {
+        Post
           .findByIdAndRemove(req.params.id)
           .then(() => {
             console.log(`Deleted blog post with id \`${req.params.id}\``);

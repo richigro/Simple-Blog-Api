@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
 
-const {BlogPosts} = require('./models');
+const { Post } = require('./models');
 
 router.get("/", (req, res) => {
     res.send("hello from new endpoint posts!");

@@ -5,7 +5,10 @@ const morgan = require("morgan");
 // instance of express
 const app = express();
 
+//import routes from blogsRouter.js
 const blogsRoutes = require("./blogsRouter");
+//import routes from postsRoutes.js
+const postsRoutes = require("./postsRoutes.js");
 
 // using middleware to log request to server's console, for debugging purposes
 app.use(morgan('common'));

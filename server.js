@@ -20,6 +20,8 @@ app.get("/", (req, res) => {
 
 // use blogsRoutes import to handle request to blogs enpoint
 app.use("/blogs", blogsRoutes);
+// endpoint to post api
+app.use("/posts", postsRoutes);
 
 
 // =============================================

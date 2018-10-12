@@ -2,6 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 
 const { app, runServer, closeServer} = require('../server');
+const {DATABASE_URL} = require('./config');
 
 const expect = chai.expect;
 
@@ -10,7 +11,7 @@ chai.use(chaiHttp);
 describe('Simple Blog', function() {
     //beore testing run the server with promise
     before(function() {
-        return runServer();
+        return runServer(DATABASE_URL);
     });
     // close server after testing
     after(function() {

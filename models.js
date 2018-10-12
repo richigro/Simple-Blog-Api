@@ -1,5 +1,6 @@
 const uuid = require('uuid');
 const mongoose = require("mongoose");
+mongoose.Promise = global.Promise;
 
 // This module provides volatile storage, using a `BlogPost`
 // model. We haven't learned about databases yet, so for now
@@ -72,33 +73,35 @@ function createBlogPostsModel() {
 
 
 
-// this is our schema to represent a post
-const postSchema = mongoose.Schema({
-  title: { type: String, required: true },
-  content: { type: String, required: true },
-  author: { type: String, required: true },
-  created: {type: String}
+const blogPostSchema = mongoose.Schema({
+  author: {
+    firstName: String,
+    lastName: String
+  },
+  title: {type: String, required: true},
+  content: {type: String},
+  created: {type: Date, default: Date.now}
 });
 
-// this is an *instance method* which will be available on all instances
-// of the model. This method will be used to return an object that only
-// exposes *some* of the fields we want from the underlying data
-postSchema.methods.serialize = function() {
+
+blogPostSchema.virtual('authorName').get(function() {
+  return `${this.author.firstName} ${this.author.lastName}`.trim();
+});
+
+blogPostSchema.methods.serialize = function() {
   return {
     id: this._id,
-    title: this.title,
+    author: this.authorName,
     content: this.content,
-    author: this.author,
+    title: this.title,
     created: this.created
   };
 };
 
-// note that all instance methods and virtual properties on our
-// schema must be defined *before* we make the call to `.model`.
-const Post = mongoose.model("Post", postSchema);
+const BlogPost = mongoose.model('BlogPost', blogPostSchema);
 
 
 //========================================================================================================
 
 
-module.exports = {BlogPosts: createBlogPostsModel(), Post};
+module.exports = {BlogPosts: createBlogPostsModel(), BlogPost};
